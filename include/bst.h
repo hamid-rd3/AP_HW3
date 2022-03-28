@@ -7,6 +7,8 @@ class BST{
     class Node {
     public:
         Node(int value ,Node* left,Node* right);
+        Node()=default;
+        Node(const Node& node);
         int value;
         Node* left;
         Node* right;
