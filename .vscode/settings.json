@@ -1,5 +1,5 @@
 {
-    "C_Cpp.clang_format_style": "Webkit",
+    "C_Cpp.clang_format_style": "WebKit",
     "C_Cpp.formatting": "clangFormat",
     "files.associations": {
         "iosfwd": "cpp",
