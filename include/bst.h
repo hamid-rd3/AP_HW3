@@ -3,6 +3,7 @@
 #include <compare>
 #include <iostream>
 #include <string>
+#include <functional>
 class BST {
 public:
     class Node {
@@ -20,8 +21,11 @@ public:
         Node* left;
         Node* right;
     };
-    Node*const &get_root()const;
+    Node* const& get_root() const;
+    void bfs(std::function<void(Node*& node)> func);
+    bool add_node(int value);
+    
 private:
-     Node* root;
+    Node* root;
 };
 #endif // BST_H

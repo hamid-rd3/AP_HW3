@@ -4,9 +4,17 @@
 
 int main(int argc, char** argv)
 {
-    if (false) // make false to run unit-tests
+    if (true) // make false to run unit-tests
     {
-        BST::Node node1 { 10, nullptr, nullptr };
+    //    std::function <int(int)> f= [] (int x){return x%2;};
+    //     std::cout<<f(51)<<std::endl;
+    //     BST::Node* node =new BST::Node {5,nullptr,nullptr}; 
+      BST bst{};
+    bst.add_node(10);
+    bst.add_node(20);
+    
+    bst.add_node(5);
+    std::cout << bst.add_node(21)<<std::endl;
 
     } else {
         ::testing::InitGoogleTest(&argc, argv);
