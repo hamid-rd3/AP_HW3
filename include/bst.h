@@ -4,6 +4,10 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <queue>
+#include <iomanip>
+#include <vector>
+#include <stdlib.h>
 class BST {
 public:
     class Node {
@@ -22,9 +26,10 @@ public:
         Node* right;
     };
     Node* const& get_root() const;
-    void bfs(std::function<void(Node*& node)> func);
+    void bfs(std::function<void(Node*& node)> func)const;
     bool add_node(int value);
-    
+    size_t length()const;
+    friend std::ostream& operator<<(std::ostream& os,const BST& bst);
 private:
     Node* root;
 };
