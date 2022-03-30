@@ -1,13 +1,13 @@
 #ifndef BST_H
 #define BST_H
 #include <compare>
-#include <iostream>
-#include <string>
 #include <functional>
-#include <queue>
 #include <iomanip>
-#include <vector>
+#include <iostream>
+#include <queue>
 #include <stdlib.h>
+#include <string>
+#include <vector>
 class BST {
 public:
     class Node {
@@ -25,11 +25,20 @@ public:
         Node* left;
         Node* right;
     };
+    BST()=default;
+    BST(const BST& bst);
+    BST(BST&& bst);
+    ~BST();
     Node* const& get_root() const;
-    void bfs(std::function<void(Node*& node)> func)const;
+    void bfs(std::function<void(Node*& node)> func) const;
     bool add_node(int value);
-    size_t length()const;
-    friend std::ostream& operator<<(std::ostream& os,const BST& bst);
+    size_t length() const;
+    Node** find_node(int value);
+    Node** find_parrent(int value);
+    Node** find_successor(int value);
+    bool delete_node(int value);
+    friend std::ostream& operator<<(std::ostream& os, const BST& bst);
+
 private:
     Node* root;
 };
