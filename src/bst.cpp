@@ -104,16 +104,24 @@ size_t BST::length() const
 
 std::ostream& operator<<(std::ostream& os, const BST& bst)
 {
-    std::vector<int> v;
-    bst.bfs([&v](BST::Node*& node) { v.push_back(node->value); });
+    std::queue<BST::Node*> qu;
     os << std::string(80, '*') << std::endl;
-    for (size_t i{};i<v.size();i++) {
-        os <<std::left<<std::setw(17)<< &v[i]  << "=> value:"
-                  << std::setw(10)<< v[i] << "left:"
-                  << std::setw(16)<< &v[i-1] << "right:"
-                  << &v[i+1] << std::endl;
+    if (bst.root != nullptr) {
+        qu.push(bst.root);
+        while (!qu.empty()) {
+            BST::Node* t = qu.front();
+            os << std::left << std::setw(17) << qu.front() << "=> value:"
+               << std::setw(10) << qu.front()->value << "left:"
+               << std::setw(16) << qu.front()->left << "right:"
+               << qu.front()->right << std::endl;
+            qu.pop();
+            if (t->left != nullptr)
+                qu.push(t->left);
+            if (t->right != nullptr)
+                qu.push(t->right);
+        }
     }
-    os<<"binary search tree size: "<<v.size()<<std::endl;
     os << std::string(80, '*') << std::endl;
+    os << "binary search tree size: " << bst.length() << std::endl;
     return os;
 }
