@@ -25,23 +25,24 @@ std::ostream& operator<<(std::ostream& os, const BST::Node& node)
 
 BST::BST(const BST& bst)
 {
-    if(bst.root==nullptr)
-        root=new Node{};
-    else{
-    root = new Node{(bst.get_root())->value,nullptr,nullptr};
-    std::queue<Node*> qu;
-    if (bst.root != nullptr) {
-        qu.push(bst.root);
-        while (!qu.empty()) {
-            Node* t = qu.front();
-            this->add_node(t->value);
-            qu.pop();
-            if (t->left != nullptr)
-                qu.push(t->left);
-            if (t->right != nullptr)
-                qu.push(t->right);
+    if (bst.root == nullptr)
+        root = new Node {};
+    else {
+        root = new Node { (bst.get_root())->value, nullptr, nullptr };
+        std::queue<Node*> qu;
+        if (bst.root != nullptr) {
+            qu.push(bst.root);
+            while (!qu.empty()) {
+                Node* t = qu.front();
+                this->add_node(t->value);
+                qu.pop();
+                if (t->left != nullptr)
+                    qu.push(t->left);
+                if (t->right != nullptr)
+                    qu.push(t->right);
+            }
         }
-    }}
+    }
 }
 
 BST::BST(BST&& bst)
@@ -133,50 +134,53 @@ size_t BST::length() const
 BST::Node** BST::find_node(int value)
 {
     if (root == nullptr) {
-        return nullptr;
-    }
-    if (root->value == value)
         return &root;
-    else if (value < root->value) {
-        this->root = root->left;
-        return this->find_node(value);
-    } else {
-        // value>root->value;
-        this->root = root->right;
-        return this->find_node(value);
     }
+    Node** tmp = new Node* {root};
+    while ((*tmp) != nullptr) {
+        if ((*tmp)->value == value)
+            return tmp;
+        else if (value < (*tmp)->value) {
+            (*tmp) = (*tmp)->left;
+        } else {
+            (*tmp) = (*tmp)->right;
+        }
+    }
+    return &root;
 }
 
 BST::Node** BST::find_parrent(int value)
 {
     if (root == nullptr) {
-        return nullptr;
-    }
-    if (root->left->value == value || root->right->value == value)
         return &root;
-    else if (value < root->value) {
-        root = root->left;
-        return this->find_parrent(value);
-    } else {
-        root = root->right;
-        return this->find_parrent(value);
     }
-}
+    Node** tmp =new Node*{root};
+    while ((*tmp)!=nullptr){
+        if((*tmp)->left->value==value || (*tmp)->right->value==value)
+            return tmp;
+        else if((*tmp)->value > value)
+            (*tmp)=(*tmp)->left;
+        else{
+            (*tmp)=(*tmp)->right;
+        }
+    }
+    return &root;
+} 
 
 BST::Node** BST::find_successor(int value)
 {
-    if (root == nullptr)
-        return nullptr;
-    if (root->left == nullptr)
-        return &root;
+    Node** tmp=new Node*{ *(this->find_node(value))};
+    if ((*tmp) == nullptr || (*tmp)->left == nullptr )
+        return tmp;
     else {
-        root = *this->find_node(value);
-        root = root->left;
-        while (root->right != nullptr) {
-            root = root->right;
+        (*tmp)= (*tmp)->left;
+        while (true) {
+            if((*tmp)->right==nullptr)
+                return tmp;
+            (*tmp) = (*tmp)->right;
         }
-        return &root;
     }
+    return &root;
 }
 
 bool BST::delete_node(int value)
@@ -184,7 +188,6 @@ bool BST::delete_node(int value)
     if (this->find_node(value) == nullptr) {
         return 0;
     } else {
-
         Node* tmp = *this->find_node(value);
         if (tmp->left == nullptr && tmp->right == nullptr) {
             delete[] tmp;
