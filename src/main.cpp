@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    if (true) // make false to run unit-tests
+    if (false) // make false to run unit-tests
     {
         BST bst {};
         BST bs3 { std::move(bst) };
@@ -16,12 +16,12 @@ int main(int argc, char** argv)
         bst.add_node(7);
         bst.add_node(8);
         bst.add_node(9);
-        BST bst2 { std::move(bst) };
+        BST bst2 =std::move(bst);
         
-        // //  delete[] bst.get_root();
-        // // nodes.clear();
-        std::cout <<bst2.delete_node(10)<< std::endl;
-         std::cout << bst2 << std::endl;
+        std::cout <<bst2.find_node(11)<< std::endl;
+                 std::cout << bst2<< std::endl;
+
+         std::cout << bst<< std::endl;
         //  std::cout<<bst2<<std::endl;
 
         // EXPECT_TRUE(bst.delete_node(53)); // leaf node
