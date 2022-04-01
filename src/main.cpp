@@ -20,7 +20,7 @@ int main(int argc, char** argv)
         
         // //  delete[] bst.get_root();
         // // nodes.clear();
-        std::cout <<**bst2.find_successor(10)<< std::endl;
+        std::cout <<bst2.delete_node(10)<< std::endl;
          std::cout << bst2 << std::endl;
         //  std::cout<<bst2<<std::endl;
 
