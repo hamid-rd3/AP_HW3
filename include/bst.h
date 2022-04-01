@@ -13,7 +13,7 @@ public:
     class Node {
     public:
         Node(int value, Node* left, Node* right);
-        Node() = default;
+        Node() ;
         Node(const Node& node);
         friend std::ostream& operator<<(std::ostream& os,
             const BST::Node& node);
@@ -37,6 +37,8 @@ public:
     Node** find_parrent(int value);
     Node** find_successor(int value);
     bool delete_node(int value);
+    const BST operator++() const;
+    const BST operator++(int) const;
     friend std::ostream& operator<<(std::ostream& os, const BST& bst);
 
 private:
