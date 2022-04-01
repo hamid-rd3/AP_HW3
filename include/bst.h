@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <initializer_list>
 class BST {
 public:
     class Node {
@@ -25,6 +26,7 @@ public:
         Node* left;
         Node* right;
     };
+    BST(std::initializer_list <int > list);
     BST() = default;
     BST(const BST& bst);
     BST(BST&& bst);

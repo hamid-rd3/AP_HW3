@@ -30,6 +30,13 @@ std::ostream& operator<<(std::ostream& os, const BST::Node& node)
     return os;
 }
 
+BST::BST(std::initializer_list <int> list ){
+root=new Node {*list.begin(),nullptr,nullptr};
+    for(auto v:list ){
+         this->add_node(v);
+    }
+}
+
 BST::BST(const BST& bst)
 {
     if (bst.root == nullptr)

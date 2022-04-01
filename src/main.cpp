@@ -16,12 +16,14 @@ int main(int argc, char** argv)
         bst.add_node(7);
         bst.add_node(8);
         bst.add_node(9);
-        BST bst2 =std::move(bst);
-        
-        std::cout <<bst2.find_node(11)<< std::endl;
-                 std::cout << bst2<< std::endl;
+         BST bst2 {5, 1, 10, 2, 8, 50, 4, 60};
+        //  BST bst4{3, 2, 100, 20, 8, 50, 4, 60, 44, 23};
 
-         std::cout << bst<< std::endl;
+        
+        // std::cout <<bst2.find_node(11)<< std::endl;
+        //          std::cout << bst2<< std::endl;
+
+         std::cout << bst2<< std::endl;
         //  std::cout<<bst2<<std::endl;
 
         // EXPECT_TRUE(bst.delete_node(53)); // leaf node
