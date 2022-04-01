@@ -17,15 +17,15 @@ int main(int argc, char** argv)
         bst.add_node(8);
         bst.add_node(9);
         BST bst2 { std::move(bst) };
-        BST::Node* r= *(bst2.find_node(9));
-        
+        bst2.delete_node(10);
         // //  delete[] bst.get_root();
         // // nodes.clear();
         std::cout << bst2 << std::endl;
+
         //  std::cout<<bst2<<std::endl;
 
         // EXPECT_TRUE(bst.delete_node(53)); // leaf node
-        // std::cout<<bst.get_root()->value<<std::endl;
+         std::cout<<**(bst2.find_node(25))<<std::endl;
         // EXPECT_EQ(bst.length(), 7);
         // EXPECT_EQ(bst.get_root()->right->right, nullptr);
     } else {

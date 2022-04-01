@@ -95,7 +95,7 @@ void BST::bfs(std::function<void(Node*& node)> func) const
 
 bool BST::add_node(int value)
 {
-    Node* node = new BST::Node { value, nullptr, nullptr };
+    Node* node = new Node { value, nullptr, nullptr };
     if (root == nullptr) {
         root = node;
         return 1;
@@ -187,12 +187,73 @@ BST::Node** BST::find_successor(int value)
 
 bool BST::delete_node(int value)
 {
-    if (this->find_node(value) == nullptr) 
+
+    //  std::queue<Node**> qu;
+    // // // root->left->left->right->right=nullptr;
+    // qu.push(&(root->left->left->right->right));
+    // Node** node =qu.back();
+    //  *(node)=nullptr;
+    //  Node* &node = qu.back();
+    //  qu.push(node->left);
+    //  node=&qu.back();
+    //  qu.push((*node)->left);
+    //  node=&qu.back();
+    //  qu.push((*node)->right);
+    //    node=&qu.back();
+    // qu.push((*node)->right);
+    //    node=&qu.back();
+    // std::cout << **node << std::endl;
+    // (*node)=nullptr;
+
+    if (this->find_node(value) == nullptr)
         return 0;
     else {
-        
-    }
+        std::queue<Node**> qu;
+        qu.push(&root);
+        Node** node =qu.back();
+        while (true) {
+            if ((*node)->value == value)
+                break;
+            else if (&(*node)->left != nullptr
+                && value < (*node)->value) {
+                qu.push(&((*node)->left));
+                node = qu.back();
+            } else if (&((*node)->right) != nullptr
+                && value > (*node)->value){
+                qu.push(&((*node)->right));
+                node = qu.back();}
+            // node must be updated to newst qu.back()
+        }
+        // qu.back() is node of given value in BST
+        // leaf    
+        if ((*node)->left == nullptr && (*node)->right == nullptr) {
+            (*node) = nullptr;
+            return 1;
+            // edge
+        } else if ((*node)->left == nullptr) {
+            (*node) = (*node)->right;
+            return 1;
+        } else if ((*node)->right == nullptr) {
+            (*node) = (*node)->left;
+            return 1;
+            // two children
+        } else {
+            Node* tmp=*node;
+            qu.push(&((*node)->left));
+            while (true) {
+                node = qu.back();
+                if ((*node)->right == nullptr) {
+                    tmp->value=(*node)->value;
+                    (*node)=nullptr;
+                    break;
+                }
+                qu.push(&(*node)->right);
+            }
+            
 
+        }
+    }
+     
     return 0;
 }
 
