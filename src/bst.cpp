@@ -24,46 +24,11 @@ std::ostream& operator<<(std::ostream& os, const BST::Node& node)
 {
     os << "address of node : " << &node << "  -  "
        << " value in node : " << node.value << "  -  "
-       << " address of left child : " << &node.left << "  -  "
-       << " address of right child : " << &node.right;
-
+       << " address of left child : " << node.left << "  -  "
+       << " address of right child : " << node.right<<std::endl;
     return os;
 }
 
-BST::BST(std::initializer_list <int> list ){
-root=new Node {*list.begin(),nullptr,nullptr};
-    for(auto v:list ){
-         this->add_node(v);
-    }
-}
-
-BST::BST(const BST& bst)
-{
-    if (bst.root == nullptr)
-        root = new Node {};
-    else {
-        root = new Node { (bst.get_root())->value, nullptr, nullptr };
-        std::queue<Node*> qu;
-        if (bst.root != nullptr) {
-            qu.push(bst.root);
-            while (!qu.empty()) {
-                Node* t = qu.front();
-                this->add_node(t->value);
-                qu.pop();
-                if (t->left != nullptr)
-                    qu.push(t->left);
-                if (t->right != nullptr)
-                    qu.push(t->right);
-            }
-        }
-    }
-}
-
-BST::BST(BST&& bst)
-    : root { bst.root }
-{
-    bst.root = nullptr;
-}
 
 std::strong_ordering BST::Node::operator<=>(Node*& node) const
 {
@@ -84,6 +49,49 @@ bool BST::Node::operator==(const int& N) const
 {
     return value == N;
 }
+// class Node definition end 
+
+BST::BST(std::initializer_list<int> list)
+{
+    root = new Node { *list.begin(), nullptr, nullptr };
+    for (auto v : list) {
+        this->add_node(v);
+    }
+}
+
+BST::BST()
+{
+    root = nullptr;
+}
+
+BST::BST(const BST& bst)
+{
+    if (bst.root == nullptr) {
+        root = nullptr;
+    } else {
+        root = new Node { (bst.get_root())->value, nullptr, nullptr };
+        std::queue<Node*> qu;
+        if (bst.root != nullptr) {
+            qu.push(bst.root); // copy of root
+            while (!qu.empty()) {
+                Node* t = qu.front();
+                this->add_node(t->value);
+                qu.pop(); // go to next height
+                if (t->left != nullptr) // first _copy of root->left added
+                    qu.push(t->left);
+                if (t->right != nullptr) // then _copy of root->right added
+                    qu.push(t->right);
+            }
+        }
+    }
+}
+
+BST::BST(BST&& bst)
+    : root { bst.root }
+{
+    bst.root = nullptr;
+}
+
 
 BST::Node* const& BST::get_root() const
 {
@@ -94,10 +102,12 @@ void BST::bfs(std::function<void(Node*& node)> func) const
 {
     std::queue<Node*> qu;
     if (root != nullptr) {
+        // copy bt value of root
         qu.push(root);
         while (!qu.empty()) {
             Node* t = qu.front();
             func(t);
+            // delete the oldest value of qu(qu-front)
             qu.pop();
             if (t->left != nullptr)
                 qu.push(t->left);
@@ -150,8 +160,10 @@ BST::Node** BST::find_node(int value)
     if (root == nullptr) {
         return nullptr;
     }
+    // using a container  to save rvalue node
     std::queue<Node**> qu;
     qu.push(&root);
+    // pass by refrence of root
     Node** node = qu.back();
     while (true) {
         if ((*node)->value == value)
@@ -159,13 +171,15 @@ BST::Node** BST::find_node(int value)
         else if ((*node)->left != nullptr
             && value < (*node)->value) {
             qu.push(&((*node)->left));
+            qu.pop();
             node = qu.back();
         } else if ((*node)->right != nullptr
             && value > (*node)->value) {
             qu.push(&((*node)->right));
+            qu.pop();
             node = qu.back();
-        }
-        else {
+        } else {
+            // value wasnt existed in object
             return nullptr;
         }
     }
@@ -188,10 +202,12 @@ BST::Node** BST::find_parrent(int value)
         else if ((*node)->left != nullptr
             && value < (*node)->value) {
             qu.push(&((*node)->left));
+            qu.pop();
             node = qu.back();
         } else if ((*node)->right != nullptr
             && value > (*node)->value) {
             qu.push(&((*node)->right));
+            qu.pop();
             node = qu.back();
         }
     }
@@ -208,11 +224,13 @@ BST::Node** BST::find_successor(int value)
     if ((*node)->left == nullptr)
         return node;
     qu.push(&((*node)->left));
+    qu.pop();
     while (true) {
         node = qu.back();
         if ((*node)->right == nullptr)
             break;
         qu.push(&(*node)->right);
+        qu.pop();
     }
     return node;
 }
@@ -268,10 +286,9 @@ BST BST::operator=(const BST& bst)
 {
     if (bst.root == nullptr)
         root = new Node {};
-    if (this==&bst){
+    if (this == &bst) {
         return *this;
-    }
-    else {
+    } else {
         delete root;
         root = new Node { (bst.get_root())->value, nullptr, nullptr };
         std::queue<Node*> qu;
@@ -291,10 +308,11 @@ BST BST::operator=(const BST& bst)
     return *this;
 }
 
-BST BST::operator=(BST&& bst){
+BST BST::operator=(BST&& bst)
+{
     delete root;
-    root=bst.root;
-    bst.root=nullptr;
+    root = bst.root;
+    bst.root = nullptr;
     return *this;
 }
 
@@ -308,6 +326,7 @@ BST::~BST()
 
 std::ostream& operator<<(std::ostream& os, const BST& bst)
 {
+    //like bfs 
     std::queue<BST::Node*> qu;
     os << std::string(80, '*') << std::endl;
     if (bst.root != nullptr) {

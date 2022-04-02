@@ -5,8 +5,9 @@
 int main(int argc, char** argv)
 {
     if (false) // make false to run unit-tests
-    {
+    {   int x=10;
         BST bst {};
+        BST bst5{bst};
         BST bs3 { std::move(bst) };
         bst.add_node(25);
         bst.add_node(10);
@@ -20,11 +21,12 @@ int main(int argc, char** argv)
         //  BST bst4{3, 2, 100, 20, 8, 50, 4, 60, 44, 23};
 
         
-        // std::cout <<bst2.find_node(11)<< std::endl;
-        //          std::cout << bst2<< std::endl;
+         std::cout <<**bst2.find_node(x)<< std::endl;
+                 std::cout << bst2<< std::endl;
 
-         std::cout << bst2<< std::endl;
-        //  std::cout<<bst2<<std::endl;
+         std::cout << bst5<< std::endl;
+          std::cout<<bst2<<std::endl;
+           std::cout <<**(bst2.find_node(10))<< std::endl;
 
         // EXPECT_TRUE(bst.delete_node(53)); // leaf node
         //  std::cout<<**(bst2.find_node(25))<<std::endl;
